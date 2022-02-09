@@ -189,39 +189,49 @@ def check_new_obj_name():
 
 
 def backup_bd():
-    # List of files DB in local directory
-    local_list_bd = os.listdir(path="Counters_Database")
-    print("list_bd: ", local_list_bd)
+    while True:
 
-    # List files storage on gdrive
-    gdrive_list_bd = gdrive.list_files_gdrive()
-    print("list_gdrive: ", gdrive_list_bd)
 
-    # List files with only id storage on gdrive
-    del_gdrive_list_files_id = []
-    for n in gdrive_list_bd:
-        del_gdrive_list_files_id.append(n["id"])
-    print("del_id_list: ", del_gdrive_list_files_id)
+        # List of files DB in local directory
+        local_list_bd = os.listdir(path="Counters_Database")
+        print("List of files DB in local directory\n")
+        for a, b, c, d in zip(local_list_bd[:5], local_list_bd[4:9], local_list_bd[8:13], local_list_bd[12:]):
+            print('{:<15}{:<15}{:<15}{:<}'.format(a, b, c, d))
+        print("\n"*2)
 
-    answer_save = input("for save DB to GDrive enter y \nDownload d: ")
-    if answer_save.upper() == "Y":
-        gdrive.del_batch(del_gdrive_list_files_id)
-        gdrive.create_file_v2(local_list_bd)
-    elif answer_save.upper() == "D":
-        gdrive.download_file(gdrive_list_bd)
+        # List files storage on gdrive
+        gdrive_list_bd = gdrive.list_files_gdrive()
+        print("List files storage on gdrive\n")
+        for a, b, c, d in zip(local_list_bd[:5], local_list_bd[4:9], local_list_bd[8:13], local_list_bd[12:]):
+            print('{:<15}{:<15}{:<15}{:<}'.format(a, b, c, d))
+        print("\n" * 2)
+
+        # List files with only id storage on gdrive
+        del_gdrive_list_files_id = []
+        for n in gdrive_list_bd:
+            del_gdrive_list_files_id.append(n["id"])
+
+        answer_save = input(8*"\n" + "Choice for REC: ")
+        if answer_save.upper() == "U":
+            gdrive.del_batch(del_gdrive_list_files_id)
+            gdrive.create_file_v2(local_list_bd)
+        elif answer_save.upper() == "D":
+            gdrive.download_file(gdrive_list_bd)
+        elif answer_save.upper() == "B":
+            break
     #
     #
     # list_gdrive = gdrive.list_files_gdrive()
     # print("saved files on gdrive: ", list_gdrive)
 
-def table_dict(dict):
-    for y, m in dict.items():
-        print(y)
-        for a, b in m.items():
-            print(a)
-            for d, f in b.items():
-                print(d, f)
-            print()
+# def table_dict(dict):
+#     for y, m in dict.items():
+#         print(y)
+#         for a, b in m.items():
+#             print(a)
+#             for d, f in b.items():
+#                 print(d, f)
+#             print()
 
 def table_dict_v2(dict):
     for x, y in dict.items():
@@ -256,8 +266,13 @@ while True:
         data_base_id = ""
         if ch_us in list(menu_dict["MAIN"].keys()):
             if ch_us == "E":
-                print("E")
                 sys.exit(0)
+
+            elif ch_us == "REC":
+                clean_console()
+                print("B: BACK" + 15*" " + "U: Upload DB to Gdrive" + 15*" " + "D: Download DB from Gdrive\n")
+                print(46*" " + "BACKUP & RECOVERY")
+                backup_bd()
 
 
             # Settings menu
